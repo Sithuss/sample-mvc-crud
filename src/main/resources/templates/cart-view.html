@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html th:replace="layout/masterLayout:: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card-header">
+          <h3>Cart View</h3>
+        </div>
+        <div class="card-body">
+          <div th:if="${!cartItems.isEmpty()}">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>id</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="item : ${cartItems}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:if="${!item.render}" th:text="${item.quantity}"></td>
+                <td th:if="${item.render}"><input type="number" class="form-control"></td>
+                <td><a th:href="@{'/cart-delete?id='+${item.id}}" class="btn btn-danger">Delete</a></td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td><h3 class="text-muted text-right">Total: <span th:text="${#numbers.formatDecimal(total, 0, 2)}"></span></h3></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div th:unless="${cartItems}">
+            <div class="alert alert-success" role="alert"><p>No Cart Item</p></div>
+          </div>
+
+
+          <div>
+            <a th:href="@{/clear-cart}" class="btn btn-secondary">Clear Cart</a>
+            <a th:href="@{/home}" class="btn btn-success">Continue Shopping</a>
+            <a th:href="@{/checkOutV1}" class="btn btn-outline-info">Check Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
