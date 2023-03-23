@@ -52,7 +52,7 @@ public class BooksController {
     @GetMapping("/cart-delete")
     public String deleteFromCart(@RequestParam("id") int id, Model model){
         model.addAttribute("cartItems", bookService.removeFromCart(id));
-        return "cart-view";
+        return "redirect:/view-cart";
     }
 
     @GetMapping("/cart/add-cart")
