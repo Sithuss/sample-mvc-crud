@@ -25,6 +25,13 @@ public class BooksController {
 
     private final BookService bookService;
 
+    private boolean changeButton;
+
+    @ModelAttribute("changeButton")
+    public boolean isChangeButton() {
+        return changeButton;
+    }
+
     @GetMapping("/checkOutV1")
     public String checkOutV1(Model model) {
         Set<CartItem> cartItems = bookService.getCartItems()
@@ -33,10 +40,25 @@ public class BooksController {
                     return item;
                 })
                 .collect(Collectors.toSet());
+        model.addAttribute("cartItem", new CartItem());
         model.addAttribute("cartItems", cartItems);
-        return "redirect:/view-cart";
+        this.changeButton=true;
+        return "cart-view";
     }
 
+    @PostMapping("/check-out-V2")
+    public String checkoutV2(CartItem cartItem, Model model) {
+        model.addAttribute("cartItems", bookService.getCartItems());
+        int i = 0;
+        for(CartItem cartItem1:bookService.getCartItems()) {
+            cartItem1.setQuantity(cartItem.getQuantityLinkedList().get(i));
+
+            cartItem1.setRender(false);
+            i++;
+        }
+//        cartItem.getQuantityLinkedList().forEach(System.out::println);
+        return "redirect:/view-cart";
+    }
 
     public BooksController(BookService bookService) {
         this.bookService = bookService;
@@ -45,6 +67,7 @@ public class BooksController {
 
     @GetMapping("/view-cart")
     public String viewCart(Model model) {
+        model.addAttribute("cartItem", new CartItem());
         model.addAttribute("cartItems", bookService.getCartItems());
         return "cart-view";
     }
@@ -194,7 +217,7 @@ public class BooksController {
         model.addAttribute("authors"
                 ,bookService.listAuthors());
         model.addAttribute("book",new Book());
-        return "bookform";
+        return "book-form";
     }
 
     @PostMapping("/book-form")
@@ -202,7 +225,7 @@ public class BooksController {
                            RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             model.addAttribute("authors",bookService.listAuthors());
-            return "bookform";
+            return "book-form";
         }
         bookService.saveBook(book);
         redirectAttributes.addFlashAttribute("success",

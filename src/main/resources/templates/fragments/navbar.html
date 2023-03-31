@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark text-light bg-dark">
     <div class="container-fluid">
@@ -7,8 +8,8 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse ml-auto navbar-collapse text-info" id="myNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse text-info" id="myNav">
+            <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a th:href="@{/home}" class="nav-link">Home</a>
                 </li>
@@ -22,6 +23,23 @@
         </div>
     </div>
 
+    <div sec:authorize="!isAuthenticated()">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a href="" th:href="@{/sign-up}" class="nav-link text-light">SignUp</a>
+            </li>
+            <li class="nav-item">
+                <a href="" th:href="@{/login}" class="nav-link text-light">LogIn</a>
+            </li>
+        </ul>
+
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a href="javascript: document.logoutForm.submit()" class="text-light">LogOut</a>
+        <form action="" th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+            <input type="submit" value="SignOut">
+        </form>
+    </div>
 </nav>
 </body>
 </html>

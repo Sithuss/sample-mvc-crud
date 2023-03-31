@@ -17,6 +17,9 @@ public class CartItem {
 
     private boolean render;
 
+    public CartItem() {
+    }
+
     public CartItem(int id, String title, double price, int quantity) {
         this.id = id;
         this.title = title;
@@ -37,5 +40,17 @@ public class CartItem {
     @Override
     public int hashCode() {
         return Objects.hash(id, title);
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", render=" + render +
+                ", quantityLinkedList=" + quantityLinkedList +
+                '}';
     }
 }
