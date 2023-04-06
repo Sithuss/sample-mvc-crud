@@ -42,6 +42,7 @@ public class BooksController {
                 .collect(Collectors.toSet());
         model.addAttribute("cartItem", new CartItem());
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("changeButton", true);
         this.changeButton=true;
         return "cart-view";
     }
@@ -68,6 +69,7 @@ public class BooksController {
     @GetMapping("/view-cart")
     public String viewCart(Model model) {
         model.addAttribute("cartItem", new CartItem());
+        model.addAttribute("changeButton", false);
         model.addAttribute("cartItems", bookService.getCartItems());
         return "cart-view";
     }
